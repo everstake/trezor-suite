@@ -49,6 +49,7 @@ import { HoverAnimation } from './HoverAnimation';
 import { Preloader } from './Preloader/Preloader';
 import { PinMatrix } from './PinMatrix/PinMatrix';
 import { UdevDownload } from './UdevDownload';
+import { StakingFeature } from './StakingFeature';
 
 export {
     AccountLabel,
@@ -105,9 +106,11 @@ export {
     Preloader,
     PinMatrix,
     UdevDownload,
+    StakingFeature,
 };
 export * from './graph';
 export * from './notifications';
 export * from './section';
 export * from './skeletons';
+export * from './styled';
 export type { ModalProps, NumberInputProps };

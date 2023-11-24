@@ -57,6 +57,7 @@ export interface Flags {
     securityStepsHidden: boolean; // dashboard UI
     dashboardGraphHidden: boolean; // dashboard UI
     dashboardAssetsGridMode: boolean; // dashboard UI
+    stakeEthBannerClosed: boolean; // banner in account view (Overview tab) presenting ETH staking feature
 }
 
 export interface SuiteSettings {
@@ -101,6 +102,7 @@ const initialState: SuiteState = {
         dashboardGraphHidden: false,
         dashboardAssetsGridMode:
             getWindowWidth() < getNumberFromPixelString(variables.SCREEN_SIZE.SM),
+        stakeEthBannerClosed: false,
     },
     settings: {
         theme: {
