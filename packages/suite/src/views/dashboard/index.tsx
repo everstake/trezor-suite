@@ -6,6 +6,7 @@ import PortfolioCard from './components/PortfolioCard';
 import SecurityFeatures from './components/SecurityFeatures';
 import { PromoBanner } from './components/PromoBanner';
 import { T2B1PromoBanner } from './components/T2B1PromoBanner';
+import { StakeEthCard } from './components/StakeEthCard';
 
 const Wrapper = styled.div`
     width: 100%;
@@ -35,6 +36,7 @@ const Dashboard = () => {
             <Divider />
             <SecurityFeatures />
             <Divider />
+            <StakeEthCard />
             <PromoBanner />
         </Wrapper>
     );

@@ -64,6 +64,7 @@ export interface Flags {
     dashboardAssetsGridMode: boolean; // dashboard UI
     showDashboardT2B1PromoBanner: boolean;
     showSettingsDesktopAppPromoBanner: boolean;
+    stakeEthBannerClosed: boolean; // banner in account view (Overview tab) presenting ETH staking feature
 }
 
 export interface SuiteSettings {
@@ -111,6 +112,7 @@ const initialState: SuiteState = {
             getWindowWidth() < getNumberFromPixelString(variables.SCREEN_SIZE.SM),
         showDashboardT2B1PromoBanner: true,
         showSettingsDesktopAppPromoBanner: true,
+        stakeEthBannerClosed: false,
     },
     settings: {
         theme: {
