@@ -34,7 +34,8 @@ import {
     AuthenticateDeviceModal,
     AuthenticateDeviceFailModal,
     DeviceAuthenticityOptOutModal,
-    StakingEthInANutshellModal,
+    StakeEthInANutshellModal,
+    StakeModal,
 } from 'src/components/suite/modals';
 import type { AcquiredDevice } from 'src/types/suite';
 import { openXpubModal, showXpub } from 'src/actions/wallet/publicKeyActions';
@@ -203,8 +204,10 @@ export const UserContextModal = ({
             return <AuthenticateDeviceModal />;
         case 'authenticate-device-fail':
             return <AuthenticateDeviceFailModal />;
-        case 'staking-eth-in-a-nutshell':
-            return <StakingEthInANutshellModal onCancel={onCancel} />;
+        case 'stake-eth-in-a-nutshell':
+            return <StakeEthInANutshellModal onCancel={onCancel} />;
+        case 'stake':
+            return <StakeModal onCancel={onCancel} />;
         default:
             return null;
     }
