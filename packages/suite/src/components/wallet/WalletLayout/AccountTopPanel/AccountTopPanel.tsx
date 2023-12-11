@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { NetworkSymbol } from '@suite-common/wallet-config';
 import { isTestnet } from '@suite-common/wallet-utils';
-import { CoinLogo, H1, H3 } from '@trezor/components';
+import { CoinLogo, H1, H3, Icon, useTheme } from '@trezor/components';
 
 import { Account } from 'src/types/wallet';
 import {
@@ -16,10 +16,13 @@ import {
     SkeletonCircle,
     SkeletonRectangle,
     SkeletonStack,
+    StakeAmountWrapper,
 } from 'src/components/suite';
 import { useSelector } from 'src/hooks/suite';
 import { AccountNavigation } from './AccountNavigation';
 import { selectLabelingDataForSelectedAccount } from 'src/reducers/suite/metadataReducer';
+import { STAKE_SYMBOLS } from 'src/constants/suite/staking';
+import { STAKED_ETH_WITH_REWARDS } from 'src/constants/suite/ethStaking';
 
 const Balance = styled(H1)`
     height: 32px;
@@ -31,6 +34,12 @@ const FiatBalanceWrapper = styled(H3)`
     height: 24px;
     color: ${({ theme }) => theme.TYPE_LIGHT_GREY};
     margin-left: 1ch;
+`;
+
+const AmountsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 `;
 
 interface AccountTopPanelSkeletonProps {
@@ -64,6 +73,7 @@ const AccountTopPanelSkeleton = ({ animate, account, symbol }: AccountTopPanelSk
 export const AccountTopPanel = () => {
     const { account, loader, status } = useSelector(state => state.wallet.selectedAccount);
     const selectedAccountLabels = useSelector(selectLabelingDataForSelectedAccount);
+    const theme = useTheme();
     if (status !== 'loaded' || !account) {
         return (
             <AccountTopPanelSkeleton
@@ -75,6 +85,9 @@ export const AccountTopPanel = () => {
     }
 
     const { symbol, formattedBalance } = account;
+    // TODO: Replace with real data
+    const hasStakeTxs = STAKED_ETH_WITH_REWARDS.gt(0);
+    const isStakeShown = STAKE_SYMBOLS.includes(symbol) && hasStakeTxs;
 
     return (
         <AppNavigationPanel
@@ -95,23 +108,50 @@ export const AccountTopPanel = () => {
                 !isTestnet(symbol) ? <Ticker symbol={symbol} tooltipPos="bottom" /> : undefined
             }
         >
-            <AmountUnitSwitchWrapper symbol={symbol}>
-                <CoinLogo size={24} symbol={symbol} />
+            <AmountsWrapper>
+                <AmountUnitSwitchWrapper symbol={symbol}>
+                    <CoinLogo size={24} symbol={symbol} />
 
-                <Balance noMargin>
-                    <FormattedCryptoAmount value={formattedBalance} symbol={symbol} />
-                </Balance>
+                    <Balance noMargin>
+                        <FormattedCryptoAmount value={formattedBalance} symbol={symbol} />
+                    </Balance>
 
-                <FiatValue
-                    amount={account.formattedBalance}
-                    symbol={symbol}
-                    showApproximationIndicator
-                >
-                    {({ value }) =>
-                        value ? <FiatBalanceWrapper noMargin>{value}</FiatBalanceWrapper> : null
-                    }
-                </FiatValue>
-            </AmountUnitSwitchWrapper>
+                    <FiatValue
+                        amount={account.formattedBalance}
+                        symbol={symbol}
+                        showApproximationIndicator
+                    >
+                        {({ value }) =>
+                            value ? <FiatBalanceWrapper noMargin>{value}</FiatBalanceWrapper> : null
+                        }
+                    </FiatValue>
+                </AmountUnitSwitchWrapper>
+
+                {isStakeShown && (
+                    <StakeAmountWrapper>
+                        <Icon icon="PIGGY_BANK" color={theme.TYPE_DARK_GREY} size={24} />
+
+                        <Balance noMargin>
+                            <FormattedCryptoAmount
+                                value={STAKED_ETH_WITH_REWARDS.toString()}
+                                symbol={symbol}
+                            />
+                        </Balance>
+
+                        <FiatValue
+                            amount={STAKED_ETH_WITH_REWARDS.toString()}
+                            symbol={symbol}
+                            showApproximationIndicator
+                        >
+                            {({ value }) =>
+                                value ? (
+                                    <FiatBalanceWrapper noMargin>{value}</FiatBalanceWrapper>
+                                ) : null
+                            }
+                        </FiatValue>
+                    </StakeAmountWrapper>
+                )}
+            </AmountsWrapper>
         </AppNavigationPanel>
     );
 };
