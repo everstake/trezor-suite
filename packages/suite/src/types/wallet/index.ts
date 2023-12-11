@@ -3,6 +3,7 @@ import {
     accountsActions,
     fiatRatesActions,
     blockchainActions,
+    stakeActions,
 } from '@suite-common/wallet-core';
 import { ArrayElement } from '@trezor/type-utils';
 
@@ -62,6 +63,7 @@ type AccountsAction = ReturnType<(typeof accountsActions)[keyof typeof accountsA
 type FiatRatesAction = ReturnType<(typeof fiatRatesActions)[keyof typeof fiatRatesActions]>;
 type BlockchainAction = ReturnType<(typeof blockchainActions)[keyof typeof blockchainActions]>;
 type DiscoveryAction = ReturnType<(typeof discoveryActions)[keyof typeof discoveryActions]>;
+type StakeAction = ReturnType<(typeof stakeActions)[keyof typeof stakeActions]>;
 
 export type WalletAction =
     | BlockchainAction
@@ -84,4 +86,5 @@ export type WalletAction =
     | PollingAction
     | CoinjoinAccountAction
     | CoinjoinClientAction
-    | AccountsAction;
+    | AccountsAction
+    | StakeAction;
