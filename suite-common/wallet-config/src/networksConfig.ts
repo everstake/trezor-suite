@@ -357,7 +357,7 @@ export const networks = {
             address: 'https://goerli1.trezor.io/address/',
             queryString: '',
         },
-        features: ['rbf', 'sign-verify', 'tokens'],
+        features: ['rbf', 'sign-verify', 'tokens', 'staking'],
         customBackends: ['blockbook'],
         accountTypes: {},
     },
