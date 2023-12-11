@@ -46,7 +46,7 @@ const buttonRequest =
                 router: { route },
             } = api.getState();
             if (account?.networkType === 'cardano' || account?.networkType === 'ethereum') {
-                if (route?.name === 'wallet-send') {
+                if (route?.name === 'wallet-send' || route?.name === 'wallet-staking') {
                     api.dispatch({
                         ...action,
                         payload: { ...action.payload, code: 'ButtonRequest_SignTx' },

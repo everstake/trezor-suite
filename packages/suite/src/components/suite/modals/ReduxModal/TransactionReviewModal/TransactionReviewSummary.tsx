@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import BigNumber from 'bignumber.js';
 import { transparentize, darken } from 'polished';
 import { getFeeUnits, formatNetworkAmount, formatAmount } from '@suite-common/wallet-utils';
+import { TranslationKey } from '@suite-common/intl-types';
 import { Icon, useTheme, CoinLogo, variables } from '@trezor/components';
 import { Translation, FormattedCryptoAmount, AccountLabel } from 'src/components/suite';
 import { Account, Network } from 'src/types/wallet';
@@ -199,8 +200,8 @@ interface TransactionReviewSummaryProps {
     network: Network;
     broadcast?: boolean;
     detailsOpen: boolean;
-    isRbfAction?: boolean;
     onDetailsClick: () => void;
+    actionText: TranslationKey;
 }
 
 export const TransactionReviewSummary = ({
@@ -210,8 +211,8 @@ export const TransactionReviewSummary = ({
     network,
     broadcast,
     detailsOpen,
-    isRbfAction,
     onDetailsClick,
+    actionText,
 }: TransactionReviewSummaryProps) => {
     const drafts = useSelector(state => state.wallet.send.drafts);
     const currentAccountKey = useSelector(
@@ -241,7 +242,7 @@ export const TransactionReviewSummary = ({
                     </NestedIconWrapper>
                 </IconWrapper>
                 <Headline>
-                    <Translation id={isRbfAction ? 'TR_REPLACE_TX' : 'SEND_TRANSACTION'} />
+                    <Translation id={actionText} />
                     <HeadlineAmount>
                         <FormattedCryptoAmount
                             disableHiddenPlaceholder

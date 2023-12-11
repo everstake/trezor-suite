@@ -23,3 +23,5 @@ export * from './device/deviceActions';
 export * from './device/deviceThunks';
 export * from './device/deviceReducer';
 export * from './device/deviceConstants';
+export * from './stake/stakeActions';
+export * from './stake/stakeReducer';

@@ -8,6 +8,7 @@ import { FormState, PrecomposedTransactionFinal, TxFinalCardano } from 'src/type
 import { Account } from 'src/types/wallet/index';
 import { getShortFingerprint, isCardanoTx } from '@suite-common/wallet-utils';
 import { ReviewOutput } from 'src/types/wallet/transaction';
+import { StakeFormState } from '@suite-common/wallet-types';
 
 export const getOutputState = (index: number, buttonRequestsCount: number) => {
     if (index === buttonRequestsCount - 1) return 'active';
@@ -73,7 +74,7 @@ type ConstructOutputsParams = {
     precomposedTx: TxFinalCardano | PrecomposedTransactionFinal;
     decreaseOutputId: number | undefined;
     account: Account;
-    precomposedForm: FormState;
+    precomposedForm: FormState | StakeFormState;
 };
 
 const constructOldFlow = ({
@@ -86,6 +87,9 @@ const constructOldFlow = ({
 
     const isCardano = isCardanoTx(account, precomposedTx);
     const { networkType } = account;
+
+    const hasBitcoinLockTime = 'bitcoinLockTime' in precomposedForm;
+    const hasRippleDestinationTag = 'rippleDestinationTag' in precomposedForm;
 
     // used in the bumb fee flow
     if (typeof precomposedTx.useNativeRbf === 'boolean' && precomposedTx.useNativeRbf) {
@@ -149,7 +153,7 @@ const constructOldFlow = ({
         });
     }
 
-    if (precomposedForm.bitcoinLockTime) {
+    if (hasBitcoinLockTime && precomposedForm.bitcoinLockTime) {
         outputs.push({ type: 'locktime', value: precomposedForm.bitcoinLockTime });
     }
 
@@ -163,7 +167,7 @@ const constructOldFlow = ({
         // 2. fee
         // 3. output
         outputs.unshift({ type: 'fee', value: precomposedTx.fee });
-        if (precomposedForm.rippleDestinationTag) {
+        if (hasRippleDestinationTag && precomposedForm.rippleDestinationTag) {
             outputs.unshift({
                 type: 'destination-tag',
                 value: precomposedForm.rippleDestinationTag,
@@ -188,6 +192,9 @@ const constructNewFlow = ({
     const isCardano = isCardanoTx(account, precomposedTx);
     const isSolana = account.networkType === 'solana';
     const { networkType } = account;
+
+    const hasBitcoinLockTime = 'bitcoinLockTime' in precomposedForm;
+    const hasRippleDestinationTag = 'rippleDestinationTag' in precomposedForm;
 
     // used in the bumb fee flow
     if (typeof precomposedTx.useNativeRbf === 'boolean' && precomposedTx.useNativeRbf) {
@@ -281,7 +288,7 @@ const constructNewFlow = ({
         });
     }
 
-    if (precomposedForm.bitcoinLockTime) {
+    if (hasBitcoinLockTime && precomposedForm.bitcoinLockTime) {
         outputs.push({ type: 'locktime', value: precomposedForm.bitcoinLockTime });
     }
 
@@ -289,7 +296,11 @@ const constructNewFlow = ({
         outputs.push({ type: 'data', value: precomposedForm.ethereumDataHex });
     }
 
-    if (networkType === 'ripple' && precomposedForm.rippleDestinationTag) {
+    if (
+        networkType === 'ripple' &&
+        hasRippleDestinationTag &&
+        precomposedForm.rippleDestinationTag
+    ) {
         outputs.unshift({
             type: 'destination-tag',
             value: precomposedForm.rippleDestinationTag,
