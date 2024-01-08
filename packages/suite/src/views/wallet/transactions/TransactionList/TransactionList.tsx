@@ -38,6 +38,8 @@ interface TransactionListProps {
     symbol: WalletAccountTransaction['symbol'];
     isLoading?: boolean;
     account: Account;
+    customTotalItems?: number;
+    isExportable?: boolean;
 }
 
 export const TransactionList = ({
@@ -45,6 +47,8 @@ export const TransactionList = ({
     isLoading,
     account,
     symbol,
+    customTotalItems,
+    isExportable = true,
 }: TransactionListProps) => {
     const localCurrency = useSelector(state => state.wallet.settings.localCurrency);
     const anchor = useSelector(state => state.router.anchor);
@@ -94,7 +98,8 @@ export const TransactionList = ({
     }, [account.descriptor, account.symbol, startPage]);
 
     const isSearching = search !== '';
-    const totalItems = isSearching ? searchedTransactions.length : account.history.total;
+    const defaultTotalItems = customTotalItems ?? account.history.total;
+    const totalItems = isSearching ? searchedTransactions.length : defaultTotalItems;
 
     const onPageSelected = (page: number) => {
         setSelectedPage(page);
@@ -179,6 +184,7 @@ export const TransactionList = ({
                     search={search}
                     setSearch={setSearch}
                     setSelectedPage={setSelectedPage}
+                    isExportable={isExportable}
                 />
             }
             data-test="@wallet/accounts/transaction-list"

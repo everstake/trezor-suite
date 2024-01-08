@@ -8,13 +8,16 @@ const Wrapper = styled.div`
     align-items: center;
 `;
 
-interface TransactionListActionsProps extends SearchProps, ExportActionProps {}
+interface TransactionListActionsProps extends SearchProps, ExportActionProps {
+    isExportable?: boolean;
+}
 
 export const TransactionListActions = ({
     account,
     search,
     setSearch,
     setSelectedPage,
+    isExportable = true,
 }: TransactionListActionsProps) => (
     <Wrapper>
         <SearchAction
@@ -23,6 +26,6 @@ export const TransactionListActions = ({
             setSearch={setSearch}
             setSelectedPage={setSelectedPage}
         />
-        <ExportAction account={account} />
+        {isExportable && <ExportAction account={account} />}
     </Wrapper>
 );
