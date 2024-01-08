@@ -2,7 +2,7 @@ import { memoizeWithArgs } from 'proxy-memoize';
 
 import { Account, WalletAccountTransaction, AccountKey } from '@suite-common/wallet-types';
 import { findTransaction, getConfirmations, isPending } from '@suite-common/wallet-utils';
-import { getIsZeroValuePhishing } from '@suite-common/suite-utils';
+import { getIsZeroValuePhishing, isStakeTx } from '@suite-common/suite-utils';
 import { createReducerWithExtraDeps } from '@suite-common/redux-utils';
 
 import { accountsActions } from '../accounts/accountsActions';
@@ -280,4 +280,12 @@ export const selectIsTransactionZeroValuePhishing = (
     if (!transaction) return false;
 
     return getIsZeroValuePhishing(transaction);
+};
+
+export const selectAccountStakeTransactions = (
+    state: TransactionsRootState,
+    accountKey: AccountKey,
+) => {
+    const transactions = selectAccountTransactions(state, accountKey);
+    return transactions.filter(tx => isStakeTx(tx.ethereumSpecific?.parsedData?.methodId));
 };

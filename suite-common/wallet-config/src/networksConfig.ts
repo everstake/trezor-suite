@@ -338,7 +338,7 @@ export const networks = {
             address: 'https://sepolia1.trezor.io/address/',
             queryString: '',
         },
-        features: ['rbf', 'sign-verify', 'tokens', 'staking'],
+        features: ['rbf', 'sign-verify', 'tokens'],
         customBackends: ['blockbook'],
         accountTypes: {},
     },
