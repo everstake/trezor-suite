@@ -22,7 +22,7 @@ import { useSelector } from 'src/hooks/suite';
 import { AccountNavigation } from './AccountNavigation';
 import { selectLabelingDataForSelectedAccount } from 'src/reducers/suite/metadataReducer';
 import { STAKE_SYMBOLS } from 'src/constants/suite/staking';
-import { STAKED_ETH_WITH_REWARDS } from 'src/constants/suite/ethStaking';
+import { useStakeAndRewards } from 'src/hooks/wallet/useStakeAndRewards';
 
 const Balance = styled(H1)`
     height: 32px;
@@ -74,6 +74,8 @@ export const AccountTopPanel = () => {
     const { account, loader, status } = useSelector(state => state.wallet.selectedAccount);
     const selectedAccountLabels = useSelector(selectLabelingDataForSelectedAccount);
     const theme = useTheme();
+    const { stakeWithRewards } = useStakeAndRewards();
+
     if (status !== 'loaded' || !account) {
         return (
             <AccountTopPanelSkeleton
@@ -85,9 +87,7 @@ export const AccountTopPanel = () => {
     }
 
     const { symbol, formattedBalance } = account;
-    // TODO: Replace with real data
-    const hasStakeTxs = STAKED_ETH_WITH_REWARDS.gt(0);
-    const isStakeShown = STAKE_SYMBOLS.includes(symbol) && hasStakeTxs;
+    const isStakeShown = STAKE_SYMBOLS.includes(symbol);
 
     return (
         <AppNavigationPanel
@@ -133,13 +133,13 @@ export const AccountTopPanel = () => {
 
                         <Balance noMargin>
                             <FormattedCryptoAmount
-                                value={STAKED_ETH_WITH_REWARDS.toString()}
+                                value={stakeWithRewards.toString()}
                                 symbol={symbol}
                             />
                         </Balance>
 
                         <FiatValue
-                            amount={STAKED_ETH_WITH_REWARDS.toString()}
+                            amount={stakeWithRewards.toString()}
                             symbol={symbol}
                             showApproximationIndicator
                         >
