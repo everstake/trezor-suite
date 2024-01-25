@@ -2,7 +2,12 @@ import { memoizeWithArgs } from 'proxy-memoize';
 
 import { Account, WalletAccountTransaction, AccountKey } from '@suite-common/wallet-types';
 import { findTransaction, getConfirmations, isPending } from '@suite-common/wallet-utils';
-import { getIsZeroValuePhishing, isStakeTx } from '@suite-common/suite-utils';
+import {
+    getIsZeroValuePhishing,
+    isClaimTx,
+    isStakeTx,
+    isStakeTypeTx,
+} from '@suite-common/suite-utils';
 import { createReducerWithExtraDeps } from '@suite-common/redux-utils';
 
 import { accountsActions } from '../accounts/accountsActions';
@@ -282,10 +287,26 @@ export const selectIsTransactionZeroValuePhishing = (
     return getIsZeroValuePhishing(transaction);
 };
 
+export const selectAccountStakeTypeTransactions = (
+    state: TransactionsRootState,
+    accountKey: AccountKey,
+) => {
+    const transactions = selectAccountTransactions(state, accountKey);
+    return transactions.filter(tx => isStakeTypeTx(tx.ethereumSpecific?.parsedData?.methodId));
+};
+
 export const selectAccountStakeTransactions = (
     state: TransactionsRootState,
     accountKey: AccountKey,
 ) => {
     const transactions = selectAccountTransactions(state, accountKey);
     return transactions.filter(tx => isStakeTx(tx.ethereumSpecific?.parsedData?.methodId));
+};
+
+export const selectAccountClaimTransactions = (
+    state: TransactionsRootState,
+    accountKey: AccountKey,
+) => {
+    const transactions = selectAccountTransactions(state, accountKey);
+    return transactions.filter(tx => isClaimTx(tx.ethereumSpecific?.parsedData?.methodId));
 };

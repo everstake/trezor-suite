@@ -26,7 +26,7 @@ import {
 import { goto } from 'src/actions/suite/routerActions';
 import { useDispatch, useSelector } from 'src/hooks/suite';
 import { getTxAnchor } from 'src/utils/suite/anchor';
-import { isStakeTx } from '@suite-common/suite-utils';
+import { isStakeTypeTx } from '@suite-common/suite-utils';
 
 const StyledHiddenPlaceholder = styled(HiddenPlaceholder)`
     font-variant-numeric: tabular-nums;
@@ -57,7 +57,7 @@ export const TransactionRenderer = ({ render: View, ...props }: TransactionRende
     const tx = findTransaction(txid, accountTxs);
     const accountDevice = findAccountDevice(account, devices);
     const confirmations = tx ? getConfirmations(tx, blockchain[account.symbol].blockHeight) : 0;
-    const destinationRoute = isStakeTx(tx?.ethereumSpecific?.parsedData?.methodId)
+    const destinationRoute = isStakeTypeTx(tx?.ethereumSpecific?.parsedData?.methodId)
         ? 'wallet-staking'
         : 'wallet-index';
 
