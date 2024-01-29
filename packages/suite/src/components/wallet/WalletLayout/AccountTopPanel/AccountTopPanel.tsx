@@ -22,7 +22,7 @@ import { useSelector } from 'src/hooks/suite';
 import { AccountNavigation } from './AccountNavigation';
 import { selectLabelingDataForSelectedAccount } from 'src/reducers/suite/metadataReducer';
 import { STAKE_SYMBOLS } from 'src/constants/suite/staking';
-import { useStakeAndRewards } from 'src/hooks/wallet/useStakeAndRewards';
+import { selectSelectedAccountAutocompoundBalance } from 'src/reducers/wallet/selectedAccountReducer';
 
 const Balance = styled(H1)`
     height: 32px;
@@ -71,10 +71,10 @@ const AccountTopPanelSkeleton = ({ animate, account, symbol }: AccountTopPanelSk
 );
 
 export const AccountTopPanel = () => {
+    const theme = useTheme();
     const { account, loader, status } = useSelector(state => state.wallet.selectedAccount);
     const selectedAccountLabels = useSelector(selectLabelingDataForSelectedAccount);
-    const theme = useTheme();
-    const { stakeWithRewards } = useStakeAndRewards();
+    const autocompoundBalance = useSelector(selectSelectedAccountAutocompoundBalance);
 
     if (status !== 'loaded' || !account) {
         return (
@@ -132,14 +132,11 @@ export const AccountTopPanel = () => {
                         <Icon icon="PIGGY_BANK" color={theme.TYPE_DARK_GREY} size={24} />
 
                         <Balance noMargin>
-                            <FormattedCryptoAmount
-                                value={stakeWithRewards.toString()}
-                                symbol={symbol}
-                            />
+                            <FormattedCryptoAmount value={autocompoundBalance} symbol={symbol} />
                         </Balance>
 
                         <FiatValue
-                            amount={stakeWithRewards.toString()}
+                            amount={autocompoundBalance}
                             symbol={symbol}
                             showApproximationIndicator
                         >

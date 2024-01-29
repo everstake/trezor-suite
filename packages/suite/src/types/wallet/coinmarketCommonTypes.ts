@@ -51,3 +51,11 @@ export interface AmountLimits extends CryptoAmountLimits {
     minFiat?: number;
     maxFiat?: number;
 }
+
+export interface AmountLimitsString {
+    currency: string;
+    minCrypto?: string;
+    maxCrypto?: string;
+    minFiat?: string;
+    maxFiat?: string;
+}
