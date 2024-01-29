@@ -4,13 +4,14 @@ import { FormState as ReactHookFormState } from 'react-hook-form/dist/types/form
 
 import { FeeLevel } from '@trezor/connect';
 import { Network } from '@trezor/suite/src/types/wallet';
-import { AmountLimits } from '@trezor/suite/src/types/wallet/coinmarketCommonTypes';
+import { AmountLimitsString } from '@trezor/suite/src/types/wallet/coinmarketCommonTypes';
 import { FiatCurrencyCode } from '@suite-common/suite-config';
 
 import { Output, PrecomposedLevels, RbfTransactionParams } from './transaction';
 import { FormOptions } from './sendForm';
 import { Account } from './account';
 import { StakeType } from './stake';
+import { Rate } from './fiatRates';
 
 export interface StakeFormState {
     fiatInput?: string;
@@ -48,7 +49,7 @@ export type StakeContextValues = UseFormReturn<StakeFormState> &
         formState: ReactHookFormState<StakeFormState>;
         removeDraft: (key: string) => void;
         isDraft: boolean;
-        amountLimits: AmountLimits;
+        amountLimits: AmountLimitsString;
         isAmountForWithdrawalWarningShown: boolean;
         isAdviceForWithdrawalWarningShown: boolean;
         isConfirmModalOpen: boolean;
@@ -58,4 +59,5 @@ export type StakeContextValues = UseFormReturn<StakeFormState> &
         setRatioAmount: (divisor: number) => void;
         closeConfirmModal: () => void;
         onSubmit: () => void;
+        currentRate: Rate | undefined;
     };

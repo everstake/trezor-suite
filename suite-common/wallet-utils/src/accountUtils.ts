@@ -30,6 +30,7 @@ import {
     HELP_CENTER_COINJOIN_URL,
     HELP_CENTER_TAPROOT_URL,
 } from '@trezor/urls';
+import { StakingPool } from '@trezor/blockchain-link-types';
 
 import { toFiatCurrency } from './fiatConverterUtils';
 
@@ -582,6 +583,35 @@ export const isTestnet = (symbol: NetworkSymbol) => {
     return net?.testnet ?? false;
 };
 
+const areStakingPoolsEqual = (a1: StakingPool[] | undefined, a2: StakingPool[] | undefined) => {
+    if (a1 === undefined && a2 !== undefined) return false;
+    if (a1 !== undefined && a2 === undefined) return false;
+
+    if (a1 !== undefined && a2 !== undefined) {
+        if (a1.length !== a2.length) return false;
+
+        return a1.every((pool, idx) => {
+            const pool2 = a2[idx];
+            const pool1Keys = Object.keys(pool);
+            const pool2Keys = Object.keys(pool2);
+
+            if (
+                pool1Keys.length !== pool2Keys.length ||
+                !pool1Keys.every(key => pool2Keys.includes(key))
+            ) {
+                return false;
+            }
+
+            // Assuming values are always strings.
+            const pool1Values: string[] = Object.values(pool);
+            const pool2Values: string[] = Object.values(pool2);
+            return pool1Values.every((val, valIdx) => val === pool2Values[valIdx]);
+        });
+    }
+
+    return true;
+};
+
 export const isAccountOutdated = (account: Account, freshInfo: AccountInfo) => {
     if (
         // if backend/coin supports addrTxCount, compare it instead of total
@@ -608,7 +638,8 @@ export const isAccountOutdated = (account: Account, freshInfo: AccountInfo) => {
         case 'ethereum':
             return (
                 freshInfo.misc!.nonce !== account.misc.nonce ||
-                freshInfo.balance !== account.balance // balance can change because of beacon chain txs (staking)
+                freshInfo.balance !== account.balance || // balance can change because of beacon chain txs (staking) |
+                !areStakingPoolsEqual(freshInfo?.stakingPools, account?.stakingPools)
             );
         case 'cardano':
             return (
@@ -650,6 +681,7 @@ export const getAccountSpecific = (
             },
             marker: undefined,
             page: accountInfo.page,
+            stakingPools: accountInfo?.stakingPools,
         };
     }
 
