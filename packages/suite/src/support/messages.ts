@@ -8692,8 +8692,8 @@ export default defineMessages({
         id: 'TOAST_SUCCESSFUL_CLAIM',
         defaultMessage: '{symbol} claimed successfully',
     },
-    TR_STAKE_IN_NEXT_BLOCK: {
-        id: 'TR_STAKE_IN_NEXT_BLOCK',
+    TR_STAKE_CLAIM_IN_NEXT_BLOCK: {
+        id: 'TR_STAKE_CLAIM_IN_NEXT_BLOCK',
         defaultMessage: 'in the next block',
     },
 });

@@ -101,7 +101,7 @@ export const ClaimEthForm = () => {
                     <Translation id="TR_STAKE_CLAIMING_PERIOD" />
                 </GreyP>
 
-                <Translation id="TR_STAKE_IN_NEXT_BLOCK" />
+                <Translation id="TR_STAKE_CLAIM_IN_NEXT_BLOCK" />
             </ClaimingPeriodWrapper>
 
             <Button

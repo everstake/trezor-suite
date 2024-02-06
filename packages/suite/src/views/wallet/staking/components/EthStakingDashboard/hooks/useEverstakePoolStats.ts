@@ -14,7 +14,7 @@ export const useEverstakePoolStats = () => {
     useEffect(() => {
         const abortController = new AbortController();
 
-        const getEeverstakePoolStats = async () => {
+        const getEverstakePoolStats = async () => {
             try {
                 setIsPoolStatsLoading(true);
 
@@ -45,7 +45,7 @@ export const useEverstakePoolStats = () => {
             }
         };
 
-        getEeverstakePoolStats();
+        getEverstakePoolStats();
         return () => {
             abortController.abort();
         };
