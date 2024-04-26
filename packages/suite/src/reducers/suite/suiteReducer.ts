@@ -59,6 +59,7 @@ export interface Flags {
     securityStepsHidden: boolean; // dashboard UI
     dashboardGraphHidden: boolean; // dashboard UI
     dashboardAssetsGridMode: boolean; // dashboard UI
+    instantStakeBannerClosed: boolean; // banner in account view (Staking tab)
     showDashboardT2B1PromoBanner: boolean;
     showSettingsDesktopAppPromoBanner: boolean;
     stakeEthBannerClosed: boolean; // banner in account view (Overview tab) presenting ETH staking feature
@@ -115,6 +116,7 @@ const initialState: SuiteState = {
         securityStepsHidden: false,
         dashboardGraphHidden: false,
         dashboardAssetsGridMode: true,
+        instantStakeBannerClosed: false,
         showDashboardT2B1PromoBanner: true,
         showSettingsDesktopAppPromoBanner: true,
         stakeEthBannerClosed: false,

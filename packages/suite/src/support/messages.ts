@@ -8818,6 +8818,15 @@ export default defineMessages({
         id: 'TR_STAKE_POWERED_BY',
         defaultMessage: 'Powered by',
     },
+    TR_STAKE_INSTANTLY_STAKED: {
+        id: 'TR_STAKE_INSTANTLY_STAKED',
+        defaultMessage: "You've instantly staked {amount} {symbol}",
+    },
+    TR_STAKE_INSTANTLY_STAKED_WITH_DAYS: {
+        id: 'TR_STAKE_INSTANTLY_STAKED_WITH_DAYS',
+        defaultMessage:
+            "You've instantly staked {stakedAmount} {symbol}. The remaining {remainingAmount} {symbol} is staked within {days} days.",
+    },
     TR_STAKE_EVERSTAKE_MANAGES: {
         id: 'TR_STAKE_EVERSTAKE_MANAGES',
         defaultMessage:

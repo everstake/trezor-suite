@@ -18,6 +18,7 @@ import {
     selectValidatorsQueue,
 } from '@suite-common/wallet-core';
 import { getDaysToAddToPool, getDaysToUnstake } from 'src/utils/suite/stake';
+import { InstantStakeBanner } from './InstantStakeBanner';
 
 const FlexCol = styled.div`
     display: flex;
@@ -71,12 +72,17 @@ export const StakingDashboard = () => {
                 <ClaimCard />
 
                 <FlexCol>
+                    <InstantStakeBanner
+                        instantlyStakedAmount={0.1}
+                        daysToAddToPool={daysToAddToPool}
+                        symbol={account?.symbol.toUpperCase()}
+                    />
+
                     <StakingCard
                         isValidatorsQueueLoading={isLoading}
                         daysToAddToPool={daysToAddToPool}
                         daysToUnstake={daysToUnstake}
                     />
-
                     <FlexRow>
                         <ApyCard apy={ethApy} />
                         <PayoutCard
