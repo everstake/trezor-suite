@@ -1984,6 +1984,8 @@
   "TR_STAKING_BANNER_DETAIL_TEXT": "残高をステーキングして、現在のAPYで年間 ~{potentialRewards} {displaySymbol} の報酬を獲得します。",
   "TR_STAKING_BANNER_DETAIL_TEXT_EMPTY": "{displaySymbol} があなたのために働くようにしましょう。ステーキングを始めて報酬を得ましょう。",
   "TR_STAKING_BANNER_DETAIL_TITLE": "{displaySymbol} をステーキングして ~{apy}% APYの報酬を獲得",
+  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
+  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere.",
   "TR_STAKING_CARD_KEEP_EARNING_CARDANO_TEXT": "<t>APY</t> は、賭けた資金に対する年間複利収益です (最初の 2 {networkDisplaySymbol} デポジットは除く)。",
   "TR_STAKING_CARD_KEEP_EARNING_TEXT": "<t>APY</t>は、ステーキングした資金による複利での年間のリターンです。",
   "TR_STAKING_CARD_KEEP_EARNING_TITLE": "収入を維持",

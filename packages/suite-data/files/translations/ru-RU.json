@@ -1510,5 +1510,7 @@
   "TR_YOU_SHOULD_ANONYMIZE": "Вам следует анонимизировать их",
   "TR_YOU_WERE_DISCONNECTED_DOT": "Вы были отключены.",
   "TR_ZERO_PHISHING_BANNER": "Действуйте с осторожностью. Это может быть мошенническая транзакция. <a>Подробнее читайте здесь.</a>",
-  "TR_ZERO_PHISHING_TOOLTIP": "Предупреждение об отравлении адреса! Эта транзакция выглядит подозрительно. <a>Узнайте больше.</a>"
+  "TR_ZERO_PHISHING_TOOLTIP": "Предупреждение об отравлении адреса! Эта транзакция выглядит подозрительно. <a>Узнайте больше.</a>",
+  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
+  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere."
 }

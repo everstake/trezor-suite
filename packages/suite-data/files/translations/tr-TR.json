@@ -2182,5 +2182,7 @@
   "TR_YOU_WERE_DISCONNECTED_DOT": "Çevrimdışısınız. Tekrar çevrimiçi olduğunuzda bazı özellikler tekrar kullanılabilir hâle gelecek.",
   "TR_ZERO_PHISHING_BANNER": "Dikkatli olun. Bu, dolandırıcılık amaçlı bir işlem olabilir. <a>Daha fazla bilgi için buraya tıklayın.</a>",
   "TR_ZERO_PHISHING_TOOLTIP": "Adres zehirlenmesi uyarısı! Bu işlem şüpheli görünüyor. <a>Daha fazla bilgi edinin.</a>",
-  "ZERO_BALANCE_TOKENS": "Sıfır bakiyeli token'lar"
+  "ZERO_BALANCE_TOKENS": "Sıfır bakiyeli token'lar",
+  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
+  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere."
 }

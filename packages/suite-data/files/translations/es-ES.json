@@ -1984,6 +1984,8 @@
   "TR_STAKING_BANNER_DETAIL_TEXT": "Haz stake de tu saldo y gana ~{potentialRewards} {displaySymbol} al año con el APY actual.",
   "TR_STAKING_BANNER_DETAIL_TEXT_EMPTY": "Haz que tus {displaySymbol} trabajen para ti. Comienza a hacer staking para ganar recompensas.",
   "TR_STAKING_BANNER_DETAIL_TITLE": "Gana ~{apy}% APY haciendo staking de tus {displaySymbol}",
+  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
+  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere.",
   "TR_STAKING_CARD_KEEP_EARNING_CARDANO_TEXT": "<t>APY</t> es tu retorno anual compuesto sobre tus fondos en staking (excluyendo el depósito inicial de 2 {networkDisplaySymbol}).",
   "TR_STAKING_CARD_KEEP_EARNING_TEXT": "<t>APY</t> es tu rendimiento anual sobre los fondos en staking, con capitalización compuesta.",
   "TR_STAKING_CARD_KEEP_EARNING_TITLE": "Sigue ganando",

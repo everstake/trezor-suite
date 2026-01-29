@@ -2192,5 +2192,7 @@
   "TR_YOU_WERE_DISCONNECTED_DOT": "Sei offline. Alcune funzionalità saranno nuovamente disponibili quando tornerai online.",
   "TR_ZERO_PHISHING_BANNER": "Procedi con cautela. Potrebbe trattarsi di una transazione fraudolenta. <a>Ulteriori informazioni sono disponibili qui.</a>",
   "TR_ZERO_PHISHING_TOOLTIP": "Avviso di address poisoning! Questa transazione sembra sospetta. <a>Ulteriori informazioni.</a>",
-  "ZERO_BALANCE_TOKENS": "Token con saldo a zero"
+  "ZERO_BALANCE_TOKENS": "Token con saldo a zero",
+  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
+  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere."
 }

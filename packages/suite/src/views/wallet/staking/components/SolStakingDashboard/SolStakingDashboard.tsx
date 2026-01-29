@@ -21,6 +21,7 @@ import { ApyCard } from '../StakingDashboard/components/ApyCard';
 import { ClaimCard } from '../StakingDashboard/components/ClaimCard';
 import { DiscoveryWarning } from '../StakingDashboard/components/DiscoveryWarning';
 import { EmptyStakingCard } from '../StakingDashboard/components/EmptyStakingCard';
+import { OutsideStakingCard } from '../StakingDashboard/components/OutsideStakingCard';
 import { PayoutCardFrequencyRewards } from '../StakingDashboard/components/PayoutCardFrequencyRewards';
 import { StakingCard } from '../StakingDashboard/components/StakingCard';
 
@@ -84,7 +85,10 @@ export const SolStakingDashboard = ({ selectedAccount }: SolStakingDashboardProp
                             <RewardsList account={account} rewards={rewards} />
                         </>
                     ) : (
-                        <EmptyStakingCard />
+                        <>
+                            <OutsideStakingCard symbol="sol" />
+                            <EmptyStakingCard />
+                        </>
                     )}
                 </Column>
             }
