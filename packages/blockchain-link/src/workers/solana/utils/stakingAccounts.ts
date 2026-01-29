@@ -86,7 +86,7 @@ export const getSolanaStakingData = async (
     rpc: RpcMainnet<SolanaRpcApiMainnet>,
     descriptor: string,
     epoch: number,
-    onlyEverstake = true,
+    everstakeAccountsFilter: 'all' | 'only' | 'exclude' = 'all',
 ): Promise<SolanaStakingAccount[]> => {
     const stakingAccounts = await getDelegations(rpc, descriptor);
 
@@ -105,7 +105,8 @@ export const getSolanaStakingData = async (
 
                 const voterPubkey = fields[1]?.delegation?.voterPubkey;
                 const isEverStake = EVERSTAKE_VOTER_PUBKEYS.includes(voterPubkey);
-                if (onlyEverstake && !isEverStake) return; // filter out non-everstake accounts
+                if (everstakeAccountsFilter === 'only' && !isEverStake) return; // filter out non-everstake accounts
+                if (everstakeAccountsFilter === 'exclude' && isEverStake) return; // filter out everstake accounts
 
                 return {
                     rentExemptReserve: fields[0]?.rentExemptReserve.toString(),
