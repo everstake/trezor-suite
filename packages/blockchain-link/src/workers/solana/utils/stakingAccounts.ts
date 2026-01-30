@@ -83,7 +83,7 @@ export const getDelegations = async (
 };
 
 export const getSolanaStakingData = async (
-    rpc: RpcMainnet<SolanaRpcApiMainnet>,
+    rpc: RpcMainnet<SolanaRpcApiMainnet> | Rpc<SolanaRpcApiMainnet>,
     descriptor: string,
     epoch: number,
     everstakeAccountsFilter: 'all' | 'only' | 'exclude' = 'all',
