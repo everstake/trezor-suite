@@ -1843,8 +1843,6 @@
   "TR_STAKING_BANNER_DETAIL_TEXT": "以目前的 APY 計算，將你的餘額質押每年可賺取約 {potentialRewards} {displaySymbol} 的報酬。",
   "TR_STAKING_BANNER_DETAIL_TEXT_EMPTY": "讓你的 {displaySymbol} 為你工作。請開始質押以賺取報酬。",
   "TR_STAKING_BANNER_DETAIL_TITLE": "質押 {displaySymbol} 可以賺取約 {apy}% APY 的報酬",
-  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
-  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere.",
   "TR_STAKING_CARD_KEEP_EARNING_TEXT": "<t>APY</t> 是每年質押資金的獲利，以複利計算。",
   "TR_STAKING_CARD_KEEP_EARNING_TITLE": "持續賺取",
   "TR_STAKING_CARD_LOCK_IN_TEXT": "質押會將你的資金鎖定，但是隨時都可以解除。",

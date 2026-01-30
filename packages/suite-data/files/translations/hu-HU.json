@@ -2135,7 +2135,5 @@
   "TR_YOU_WERE_DISCONNECTED_DOT": "Kapcsolat bontva.",
   "TR_ZERO_PHISHING_BANNER": "Óvatosan lépj tovább. Ez lehet, hogy egy csalárd tranzakció. <a>Tudj meg többet.</a>",
   "TR_ZERO_PHISHING_TOOLTIP": "Címmérgezési figyelmeztetés! Ez a tranzakció gyanúsnak tűnik. <a>Tudj meg többet.</a>",
-  "ZERO_BALANCE_TOKENS": "Nulla egyenlegű tokenek",
-  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
-  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere."
+  "ZERO_BALANCE_TOKENS": "Nulla egyenlegű tokenek"
 }

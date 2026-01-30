@@ -1983,8 +1983,6 @@
   "TR_STAKING_BANNER_DETAIL_TEXT": "Stakujte svůj zůstatek a se stávajícím APY vydělejte ~ {potentialRewards} {displaySymbol} ročně.",
   "TR_STAKING_BANNER_DETAIL_TEXT_EMPTY": "Nechte své {displaySymbol} pracovat za vás. Začněte stakovat a vydělávejte.",
   "TR_STAKING_BANNER_DETAIL_TITLE": "Stakováním svých {displaySymbol} vydělejte ~ {apy} % APY",
-  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
-  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere.",
   "TR_STAKING_CARD_KEEP_EARNING_CARDANO_TEXT": "<t>APY</t> je váš roční složený výnos ze stakovaných prostředků (nezahrnuje počáteční vklad 2 {networkDisplaySymbol}).",
   "TR_STAKING_CARD_KEEP_EARNING_TEXT": "<t>APY</t> je váš roční výnos ze stakovaných prostředků s využitím compoundingu.",
   "TR_STAKING_CARD_KEEP_EARNING_TITLE": "Vydělávejte",

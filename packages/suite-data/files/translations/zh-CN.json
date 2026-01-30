@@ -2004,8 +2004,6 @@
   "TR_STAKING_BANNER_DETAIL_TEXT": "质押你的余额，按当前年化收益率，每年可赚取大约 {potentialRewards} {displaySymbol}。",
   "TR_STAKING_BANNER_DETAIL_TEXT_EMPTY": "让您的 {displaySymbol} 为您创造价值。立即开始质押以赚取收益。",
   "TR_STAKING_BANNER_DETAIL_TITLE": "通过质押您的 {displaySymbol}，可赚取大约 {apy}% 的年化收益率",
-  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
-  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere.",
   "TR_STAKING_CARD_KEEP_EARNING_CARDANO_TEXT": "<t>APY</t> 是您质押资产的年化复合收益率（不包括最初的 2 笔{networkDisplaySymbol} 押金）。",
   "TR_STAKING_CARD_KEEP_EARNING_TEXT": "<t>年化收益率</t>是您质押资金的年度回报率，收益可复利（不含 2 ADA 的押金）。",
   "TR_STAKING_CARD_KEEP_EARNING_TITLE": "持续赚取",

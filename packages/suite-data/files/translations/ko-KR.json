@@ -1984,8 +1984,6 @@
   "TR_STAKING_BANNER_DETAIL_TEXT": "잔액을 스테이킹하고 현재 APY 기준으로 연간 약 {potentialRewards} {displaySymbol}을 받으세요.",
   "TR_STAKING_BANNER_DETAIL_TEXT_EMPTY": "{displaySymbol}을 활용하세요. 스테이킹을 시작하여 보상을 받으세요.",
   "TR_STAKING_BANNER_DETAIL_TITLE": "{displaySymbol} 스테이킹으로 ~{apy}% APY 수익을 얻으세요",
-  "TR_OUTSIDE_STAKING_CARD_TITLE": "You're staking outside of Trezor Suite",
-  "TR_OUTSIDE_STAKING_CARD_TEXT": "{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere.",
   "TR_STAKING_CARD_KEEP_EARNING_CARDANO_TEXT": "<t>APY</t>는 스테이킹한 자금에 대한 연간 복리 수익률입니다(초기 2 {networkDisplaySymbol} 예치금은 제외).",
   "TR_STAKING_CARD_KEEP_EARNING_TEXT": "<t>APY</t>는 복리 기준으로 계산된 스테이킹 자금의 연간 수익률입니다.",
   "TR_STAKING_CARD_KEEP_EARNING_TITLE": "보상 계속 받기",
