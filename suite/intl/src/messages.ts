@@ -10778,4 +10778,12 @@ export const messages = defineMessages({
         id: 'TR_NON_TRADABLE_TOKENS',
         defaultMessage: 'Non-tradable tokens',
     },
+    TR_OUTSIDE_STAKING_CARD_TITLE: {
+        id: 'TR_OUTSIDE_STAKING_CARD_TITLE',
+        defaultMessage: "You're staking outside of Trezor Suite",
+    },
+    TR_OUTSIDE_STAKING_CARD_TEXT: {
+        id: 'TR_OUTSIDE_STAKING_CARD_TEXT',
+        defaultMessage: '{amount} {displaySymbol} (= {fiat}) is currently staked elsewhere.',
+    },
 } as const);
