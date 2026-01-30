@@ -16,6 +16,7 @@ import { useSolanaRewards } from 'src/hooks/wallet/useSolanaRewards';
 import { StakingDashboard } from '../StakingDashboard/StakingDashboard';
 import { RewardsList } from './Rewards/RewardsList';
 import { StakingRewardsWarning } from './StakingRewardsWarning';
+import { useOutsideStakingData } from './hooks/useOutsideStakingData';
 import { useRewardsNotAvailableYet } from './hooks/useRewardsNotAvailableYet';
 import { ApyCard } from '../StakingDashboard/components/ApyCard';
 import { ClaimCard } from '../StakingDashboard/components/ClaimCard';
@@ -46,6 +47,10 @@ export const SolStakingDashboard = ({ selectedAccount }: SolStakingDashboardProp
         account,
         rewards.selectedAccountRewards?.[0],
     );
+
+    const { hasStakingAccounts, totalStaked } = useOutsideStakingData({
+        account,
+    });
 
     return (
         <StakingDashboard
@@ -82,11 +87,22 @@ export const SolStakingDashboard = ({ selectedAccount }: SolStakingDashboardProp
                                     />
                                 </Column>
                             </DashboardSection>
+                            {hasStakingAccounts && (
+                                <OutsideStakingCard
+                                    symbol={account.symbol}
+                                    totalStaked={totalStaked}
+                                />
+                            )}
                             <RewardsList account={account} rewards={rewards} />
                         </>
                     ) : (
                         <>
-                            <OutsideStakingCard symbol="sol" />
+                            {hasStakingAccounts && (
+                                <OutsideStakingCard
+                                    symbol={account.symbol}
+                                    totalStaked={totalStaked}
+                                />
+                            )}
                             <EmptyStakingCard />
                         </>
                     )}
