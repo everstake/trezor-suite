@@ -13,11 +13,12 @@ import {
 } from '@suite-common/wallet-core';
 import { type Account, type StakeFormState } from '@suite-common/wallet-types';
 import {
+    formatNetworkAmount,
     fromBaseCurrencyToCryptoUnit,
-    fromWei,
     getConvertedOrDefaultFeeInfo,
     getFiatRateKey,
     getMaxStakeAmount,
+    getStakeWithdrawalReserveState,
     getStakingLimitsByNetworkSymbol,
     toFiatCurrency,
 } from '@suite-common/wallet-utils';
@@ -170,9 +171,9 @@ export const useStakeForm = ({ account }: UseStakeFormProps): StakeContextValues
         const transactionInfo = composedLevels?.[selectedFee];
 
         return transactionInfo !== undefined && transactionInfo.type !== 'error'
-            ? fromWei(transactionInfo.fee).toEther('bignumber')
-            : new BigNumber('0');
-    }, [composedLevels, selectedFee]);
+            ? formatNetworkAmount(transactionInfo.fee, account.symbol)
+            : '0';
+    }, [composedLevels, selectedFee, account.symbol]);
 
     const amountLimits: AmountLimitProps | undefined = useMemo(() => {
         if (stakingLimits === null) {
@@ -198,38 +199,23 @@ export const useStakeForm = ({ account }: UseStakeFormProps): StakeContextValues
         };
     }, [stakingLimits, account.symbol, account.formattedBalance, currentRate?.rate]);
 
-    const showAdviceBanner = useMemo(() => {
-        const amount = new BigNumber(values.cryptoInput || '0');
-        const balance = new BigNumber(account.formattedBalance || '0');
-        const balanceMinusFee = balance.minus(composedFee);
-
-        return (
-            stakingLimits != null &&
-            amount.gt(balanceMinusFee.minus(stakingLimits.MIN_FOR_WITHDRAWALS)) &&
-            amount.lt(balanceMinusFee) &&
-            amount.gte(stakingLimits.MIN_AMOUNT_FOR_STAKING)
-        );
-    }, [stakingLimits, values.cryptoInput, account.formattedBalance, composedFee]);
-
-    const { isAmountForWithdrawalWarningShown, isLessAmountForWithdrawalWarningShown } =
-        useMemo(() => {
-            const isSetMax = values.setMaxOutputId != undefined;
-            if (!isSetMax || !stakingLimits) {
-                return {
-                    isAmountForWithdrawalWarningShown: false,
-                    isLessAmountForWithdrawalWarningShown: false,
-                };
-            }
-
-            const balance = new BigNumber(account.formattedBalance || '0');
-            const amount = new BigNumber(values.cryptoInput || '0');
-            const diff = balance.minus(amount);
-
-            return {
-                isAmountForWithdrawalWarningShown: diff.gte(stakingLimits.MIN_FOR_WITHDRAWALS),
-                isLessAmountForWithdrawalWarningShown: diff.lt(stakingLimits.MIN_FOR_WITHDRAWALS),
-            };
-        }, [values.setMaxOutputId, values.cryptoInput, stakingLimits, account.formattedBalance]);
+    const withdrawalReserveState = useMemo(
+        () =>
+            getStakeWithdrawalReserveState({
+                balance: account.formattedBalance,
+                amount: values.cryptoInput ?? '',
+                fee: composedFee,
+                symbol: account.symbol,
+                isMaxAmountSelected: values.setMaxOutputId != undefined,
+            }),
+        [
+            account.formattedBalance,
+            account.symbol,
+            composedFee,
+            values.cryptoInput,
+            values.setMaxOutputId,
+        ],
+    );
 
     const onCryptoAmountChange = useCallback(
         async (amount: string, source: 'input' | 'max' = 'input') => {
@@ -398,9 +384,7 @@ export const useStakeForm = ({ account }: UseStakeFormProps): StakeContextValues
         stakingLimits,
         setMax,
         setRatioAmount,
-        isAmountForWithdrawalWarningShown,
-        isLessAmountForWithdrawalWarningShown,
-        showAdviceBanner,
+        withdrawalReserveState,
         selectedFee,
         feeInfo,
         changeFeeLevel,

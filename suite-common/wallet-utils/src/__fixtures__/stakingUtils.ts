@@ -2,6 +2,8 @@ import { type NetworkSymbol, type NetworkType } from '@suite-common/wallet-confi
 import { UNSTAKING_ETH_PERIOD } from '@suite-common/wallet-constants';
 import { SOLANA_EPOCH_DAYS } from '@trezor/network-solana/constants';
 
+import { type StakeWithdrawalReserveState } from '../stakingUtils';
+
 type GetUnstakingPeriodInDaysFixture = {
     description: string;
     args: {
@@ -158,5 +160,160 @@ export const getMaxStakeAmountFixture: GetMaxStakeAmountFixture[] = [
             'ADA: never returns a negative amount when the balance is below the fee buffer',
         args: { balance: '0.001', symbol: 'ada' },
         result: '0',
+    },
+];
+
+type GetStakeWithdrawalReserveStateFixture = {
+    description: string;
+    args: {
+        balance: string;
+        amount: string;
+        fee: string;
+        symbol: NetworkSymbol | undefined;
+        isMaxAmountSelected: boolean;
+    };
+    result: StakeWithdrawalReserveState | null;
+};
+
+export const getStakeWithdrawalReserveStateFixture: GetStakeWithdrawalReserveStateFixture[] = [
+    {
+        description:
+            'SOL: staking max on a 5 balance leaves exactly the 0.02 withdrawal reserve, so it confirms the reserve instead of staying silent',
+        args: {
+            balance: '5',
+            amount: '4.98',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: true,
+        },
+        result: 'reserveLeft',
+    },
+    {
+        description:
+            'SOL: the same max amount typed by hand only recommends the reserve, because the fee pushes the remainder below 0.02',
+        args: {
+            balance: '5',
+            amount: '4.98',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: false,
+        },
+        result: 'recommendedReserve',
+    },
+    {
+        description: 'SOL: a manually entered amount that eats into the 0.02 reserve is flagged',
+        args: {
+            balance: '5',
+            amount: '4.99',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: false,
+        },
+        result: 'recommendedReserve',
+    },
+    {
+        description:
+            'SOL: a manually entered amount that leaves the reserve plus the fee is not flagged',
+        args: {
+            balance: '5',
+            amount: '4.9',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: false,
+        },
+        result: null,
+    },
+    {
+        description:
+            'SOL: an amount exceeding the fee-adjusted balance is left to the form validation, not the reserve banner',
+        args: {
+            balance: '5',
+            amount: '5',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: false,
+        },
+        result: null,
+    },
+    {
+        description:
+            'SOL: an amount below the staking minimum cannot be submitted, so the reserve banner stays hidden',
+        args: {
+            balance: '1.005',
+            amount: '0.999',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: false,
+        },
+        result: null,
+    },
+    {
+        description:
+            'SOL: staking max on a balance too small for the withdrawal-reserve branch reports the smaller leftover',
+        args: {
+            balance: '1.01',
+            amount: '1.005',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: true,
+        },
+        result: 'smallReserveLeft',
+    },
+    {
+        description:
+            'SOL: an unavailable fee falls back to a fee of 0 instead of hiding the banner',
+        args: {
+            balance: '5',
+            amount: '4.99',
+            fee: '',
+            symbol: 'sol',
+            isMaxAmountSelected: false,
+        },
+        result: 'recommendedReserve',
+    },
+    {
+        description: 'SOL: an empty amount has nothing to compare against',
+        args: {
+            balance: '5',
+            amount: '',
+            fee: '0.000005',
+            symbol: 'sol',
+            isMaxAmountSelected: true,
+        },
+        result: null,
+    },
+    {
+        description:
+            'ETH: staking max leaves the 0.005 withdrawal reserve, matching the desktop e2e expectation',
+        args: {
+            balance: '5',
+            amount: '4.995',
+            fee: '0.0004',
+            symbol: 'eth',
+            isMaxAmountSelected: true,
+        },
+        result: 'reserveLeft',
+    },
+    {
+        description: 'ADA: has no withdrawal reserve, so the messaging is skipped entirely',
+        args: {
+            balance: '5',
+            amount: '5',
+            fee: '0.17',
+            symbol: 'ada',
+            isMaxAmountSelected: true,
+        },
+        result: null,
+    },
+    {
+        description: 'returns null for a non-staking network symbol',
+        args: {
+            balance: '5',
+            amount: '1',
+            fee: '0.0001',
+            symbol: 'btc',
+            isMaxAmountSelected: true,
+        },
+        result: null,
     },
 ];

@@ -1,12 +1,15 @@
 import { events, selectDesktopAnalyticsDep } from '@suite/analytics';
-import { Translation, useTranslation } from '@suite/intl';
+import { Translation, type TranslationKey, useTranslation } from '@suite/intl';
 import { selectLanguage } from '@suite/settings';
 import { useServices } from '@suite-common/dependency-injection';
 import { useFormatters } from '@suite-common/formatters';
 import { formInputsMaxLength } from '@suite-common/validators';
 import { getNetworkDisplaySymbol } from '@suite-common/wallet-config';
 import { type StakeFormState } from '@suite-common/wallet-types';
-import { getStakingLimitsByNetworkSymbol } from '@suite-common/wallet-utils';
+import {
+    type StakeWithdrawalReserveState,
+    getStakingLimitsByNetworkSymbol,
+} from '@suite-common/wallet-utils';
 import { Banner, Column, Text } from '@trezor/components';
 import { InputWithOptions } from '@trezor/product-components';
 import { BigNumber } from '@trezor/utils';
@@ -25,6 +28,12 @@ import {
 } from 'src/utils/suite/validation';
 import { type FormPercentButtonValue } from 'src/views/wallet/trading/common/TradingForm/tradingFormInputsUtils';
 
+const WITHDRAWAL_RESERVE_MESSAGE_ID = {
+    recommendedReserve: 'TR_STAKE_RECOMMENDED_AMOUNT_FOR_WITHDRAWALS',
+    reserveLeft: 'TR_STAKE_LEFT_AMOUNT_FOR_WITHDRAWAL',
+    smallReserveLeft: 'TR_STAKE_LEFT_SMALL_AMOUNT_FOR_WITHDRAWAL',
+} satisfies Record<StakeWithdrawalReserveState, TranslationKey>;
+
 export const StakeInputs = () => {
     const { translationString } = useTranslation();
     const { CryptoAmountFormatter, BaseCurrencyAmountFormatter } = useFormatters();
@@ -41,9 +50,7 @@ export const StakeInputs = () => {
         onCryptoAmountChange,
         onFiatAmountChange,
         baseCurrencyCode,
-        isAmountForWithdrawalWarningShown,
-        isLessAmountForWithdrawalWarningShown,
-        showAdviceBanner,
+        withdrawalReserveState,
         currentRate,
         setRatioAmount,
         setMax,
@@ -94,9 +101,6 @@ export const StakeInputs = () => {
             }),
         },
     };
-
-    const shouldShowAmountForWithdrawalWarning =
-        isLessAmountForWithdrawalWarningShown || isAmountForWithdrawalWarningShown;
 
     const networkDisplaySymbol = getNetworkDisplaySymbol(account.symbol);
 
@@ -269,34 +273,14 @@ export const StakeInputs = () => {
                     },
                 ]}
             />
-            {shouldShowAmountForWithdrawalWarning && (
+            {withdrawalReserveState !== null && (
                 <Banner
                     data-testid="@staking/form/withdrawal-warning"
                     intent="info"
                     width="100%"
                     description={
                         <Translation
-                            id={
-                                isLessAmountForWithdrawalWarningShown
-                                    ? 'TR_STAKE_LEFT_SMALL_AMOUNT_FOR_WITHDRAWAL'
-                                    : 'TR_STAKE_LEFT_AMOUNT_FOR_WITHDRAWAL'
-                            }
-                            values={{
-                                amount: stakingLimits.MIN_FOR_WITHDRAWALS.toString(),
-                                networkDisplaySymbol,
-                            }}
-                        />
-                    }
-                />
-            )}
-            {showAdviceBanner && !isAmountForWithdrawalWarningShown && (
-                <Banner
-                    data-testid="@staking/form/withdrawal-warning"
-                    intent="info"
-                    width="100%"
-                    description={
-                        <Translation
-                            id="TR_STAKE_RECOMMENDED_AMOUNT_FOR_WITHDRAWALS"
+                            id={WITHDRAWAL_RESERVE_MESSAGE_ID[withdrawalReserveState]}
                             values={{
                                 amount: stakingLimits.MIN_FOR_WITHDRAWALS.toString(),
                                 networkDisplaySymbol,

@@ -7,6 +7,7 @@ import {
     type StakeFormState,
     type StakingLimits,
 } from '@suite-common/wallet-types';
+import { type StakeWithdrawalReserveState } from '@suite-common/wallet-utils';
 
 export type StakeContextValues = UseFormReturn<StakeFormState> &
     BaseStakeContextValues & {
@@ -15,9 +16,7 @@ export type StakeContextValues = UseFormReturn<StakeFormState> &
         removeDraft: (key: string) => void;
         isDraft: boolean;
         amountLimits?: AmountLimitsString;
-        isAmountForWithdrawalWarningShown: boolean;
-        isLessAmountForWithdrawalWarningShown: boolean;
-        showAdviceBanner: boolean;
+        withdrawalReserveState: StakeWithdrawalReserveState | null;
         isConfirmModalOpen: boolean;
         stakingLimits: StakingLimits | null;
         onCryptoAmountChange: (amount: string) => void;

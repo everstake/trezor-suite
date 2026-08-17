@@ -185,6 +185,51 @@ export const getMaxStakeAmount = ({ balance, symbol }: GetMaxStakeAmount): strin
     return BigNumber.min(maxAmount, limits.MAX_AMOUNT_FOR_STAKING).toFixed();
 };
 
+export type StakeWithdrawalReserveState = 'recommendedReserve' | 'reserveLeft' | 'smallReserveLeft';
+
+type GetStakeWithdrawalReserveState = {
+    balance: string;
+    amount: string;
+    fee: string;
+    symbol: NetworkSymbol | undefined;
+    isMaxAmountSelected: boolean;
+};
+
+// Single source of truth for the withdrawal-reserve messaging of the stake form on both platforms.
+// `getMaxStakeAmount` deliberately stakes everything down to MIN_FOR_WITHDRAWALS, so a max amount
+// only confirms what was left behind, while a manually entered amount is flagged as soon as it eats
+// into that reserve. Networks without a withdrawal reserve (ADA) opt out of the messaging entirely.
+export const getStakeWithdrawalReserveState = ({
+    balance,
+    amount,
+    fee,
+    symbol,
+    isMaxAmountSelected,
+}: GetStakeWithdrawalReserveState): StakeWithdrawalReserveState | null => {
+    const limits = getStakingLimitsByNetworkSymbol(symbol);
+    if (!limits || limits.MIN_FOR_WITHDRAWALS.lte(0)) return null;
+
+    const amountBN = new BigNumber(amount || '0');
+    const balanceBN = new BigNumber(balance || '0');
+    if (!amountBN.isFinite() || amountBN.lte(0) || !balanceBN.isFinite()) return null;
+
+    if (isMaxAmountSelected) {
+        return balanceBN.minus(amountBN).gte(limits.MIN_FOR_WITHDRAWALS)
+            ? 'reserveLeft'
+            : 'smallReserveLeft';
+    }
+
+    const feeBN = new BigNumber(fee || '0');
+    const balanceMinusFee = balanceBN.minus(feeBN.isFinite() ? feeBN : 0);
+
+    const isReserveTouched =
+        amountBN.gt(balanceMinusFee.minus(limits.MIN_FOR_WITHDRAWALS)) &&
+        amountBN.lt(balanceMinusFee) &&
+        amountBN.gte(limits.MIN_AMOUNT_FOR_STAKING);
+
+    return isReserveTouched ? 'recommendedReserve' : null;
+};
+
 export const getStakingDataForNetwork = (
     account?: Account,
 ): Omit<StakingPoolExtended, 'contract' | 'name'> | undefined => {
