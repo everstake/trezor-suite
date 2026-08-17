@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import { type NetworkSymbol } from '@suite-common/wallet-config';
@@ -15,7 +16,7 @@ import {
 } from '@suite-common/wallet-utils';
 import { HStack, Switch, Text } from '@suite-native/atoms';
 import { useCryptoFiatConverters } from '@suite-native/formatters';
-import { useFormContext } from '@suite-native/forms';
+import { useField, useFormContext } from '@suite-native/forms';
 import { Translation } from '@suite-native/intl';
 import {
     type NativeStakingRootState,
@@ -43,6 +44,7 @@ export const EarnMaxButton = ({
     variant = 'stake',
 }: EarnMaxButtonProps) => {
     const { setValue } = useFormContext<EarnFormValues>();
+    const { value: amountValue } = useField({ name: 'amount' });
 
     const account = useSelector((state: AccountsRootState) =>
         selectAccountByKey(state, accountKey),
@@ -59,20 +61,33 @@ export const EarnMaxButton = ({
         isInSats: isBaseCurrencyInSats,
     });
 
-    const getMaxAmount = (): string => {
+    const getMaxAmount = (): string | null => {
+        if (!account) return null;
+
         if (variant === 'unstake') {
             return stakedBalance ?? '0';
         }
 
-        const availableAmount = formatNetworkAmount(account!.availableBalance, symbol);
+        const availableAmount = formatNetworkAmount(account.availableBalance, symbol);
 
         return getMaxStakeAmount({ balance: availableAmount, symbol });
     };
 
-    const setMaxAmount = () => {
-        if (!account) return;
+    const maxAmount = getMaxAmount();
+    const isAmountMax =
+        maxAmount !== null && !!amountValue && new BigNumber(amountValue).eq(maxAmount);
 
-        const maxAmount = getMaxAmount();
+    // Anything else writing to the amount field leaves the switch claiming a max amount that is no
+    // longer there. Consumers of `isChecked`, such as the withdrawal-reserve banner, would then
+    // describe the wrong reserve, so the switch drops as soon as the two disagree.
+    useEffect(() => {
+        if (isChecked && !isAmountMax) {
+            onChange(false);
+        }
+    }, [isChecked, isAmountMax, onChange]);
+
+    const setMaxAmount = () => {
+        if (maxAmount === null) return;
 
         setValue('amount', maxAmount, { shouldValidate: true });
 

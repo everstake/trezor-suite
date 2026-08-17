@@ -2864,6 +2864,10 @@ export const messages = {
             unstakeMaxButton: 'Unstake max',
             withdrawalFeesRecommendation:
                 "It's recommended to leave {amount} {displaySymbol} so you can pay withdrawal fees.",
+            withdrawalFeesReserveLeft:
+                "We've left {amount} {displaySymbol} in your account so you can pay withdrawal fees.",
+            withdrawalFeesSmallReserveLeft:
+                "We've left a small amount of {displaySymbol} in your account so you can pay withdrawal fees.",
             insufficientBalanceBanner:
                 'Not enough {displaySymbol}. Staking requires at least {minAmount} {displaySymbol} plus network fees.',
             insufficientBalanceBannerButton: 'Buy {displaySymbol}',
