@@ -2,7 +2,11 @@ import { useMemo } from 'react';
 
 import { Translation } from '@suite/intl';
 import { type NetworkType } from '@suite-common/wallet-config';
-import { CARDANO_ACTIVATION_PERIOD_DAYS, CARDANO_EPOCH_DAYS } from '@suite-common/wallet-constants';
+import {
+    CARDANO_EPOCH_DAYS,
+    MAX_CARDANO_ACTIVATION_PERIOD_DAYS,
+    MIN_CARDANO_ACTIVATION_PERIOD_DAYS,
+} from '@suite-common/wallet-constants';
 import {
     type Account,
     type StakeType,
@@ -173,9 +177,10 @@ const buildCardanoLabels = ({
                     <Translation id="TR_STAKE_ACTIVATION_PERIOD" />
                     <Paragraph typographyStyle="body-xs" intent="neutral" priority="secondary">
                         <Translation
-                            id="TR_UP_TO_DAYS"
+                            id="TR_EARN_APPROXIMATE_DAYS_RANGE"
                             values={{
-                                count: CARDANO_ACTIVATION_PERIOD_DAYS,
+                                minCount: MIN_CARDANO_ACTIVATION_PERIOD_DAYS,
+                                maxCount: MAX_CARDANO_ACTIVATION_PERIOD_DAYS,
                             }}
                         />
                     </Paragraph>
