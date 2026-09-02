@@ -4,12 +4,16 @@ import { type Account } from '@suite-common/wallet-types';
 
 import * as fixtures from './__fixtures__/cardanoStakingUtils';
 import {
+    convertDrepIdToCip129,
+    getCardanoAccountDrepId,
     hasCardanoLiveVoteDelegation,
     isCardanoStakedOutsideEverstake,
     isCardanoStakedWithEverstake,
     isCardanoStakedWithFiveBinaries,
+    parseDrepBech32,
     poolBech32ToHex,
     selectBestCardanoPool,
+    validateCardanoDrep,
 } from './cardanoStakingUtils';
 
 describe('cardano staking utils', () => {
@@ -54,9 +58,36 @@ describe('cardano staking utils', () => {
         });
     });
 
+    fixtures.getCardanoAccountDrepId.forEach(f => {
+        it(`getCardanoAccountDrepId: ${f.description}`, () => {
+            expect(getCardanoAccountDrepId(f.account as Account)).toBe(f.result);
+        });
+    });
+
     fixtures.hasCardanoLiveVoteDelegation.forEach(f => {
         it(`hasCardanoLiveVoteDelegation: ${f.description}`, () => {
             expect(hasCardanoLiveVoteDelegation(f.account as Account)).toBe(f.result);
+        });
+    });
+
+    fixtures.validateCardanoDrep.forEach(f => {
+        it(`validateCardanoDrep: ${f.description}`, () => {
+            expect(validateCardanoDrep(f.drepId)).toBe(f.result);
+        });
+    });
+
+    fixtures.convertDrepIdToCip129.forEach(f => {
+        it(`convertDrepIdToCip129: ${f.description}`, () => {
+            expect(convertDrepIdToCip129(f.drepId)).toBe(f.result);
+        });
+    });
+
+    fixtures.convertDrepIdToCip129PreservesCertificate.forEach(f => {
+        it(`convertDrepIdToCip129: leaves the signed ${f.description} untouched`, () => {
+            const converted = convertDrepIdToCip129(f.drepId);
+
+            expect(converted).not.toBeNull();
+            expect(parseDrepBech32(converted!)).toEqual(parseDrepBech32(f.drepId));
         });
     });
 });

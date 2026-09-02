@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { Translation, type TranslationKey, useTranslation } from '@suite/intl';
@@ -8,8 +8,9 @@ import {
     stakeActions,
 } from '@suite-common/wallet-core';
 import { type Account } from '@suite-common/wallet-types';
-import { validateCardanoDrep } from '@suite-common/wallet-utils';
-import { Column, Input, Radio, Text } from '@trezor/components';
+import { convertDrepIdToCip129, validateCardanoDrep } from '@suite-common/wallet-utils';
+import { Column, Icon, Input, Radio, Text } from '@trezor/components';
+import { CheckIcon } from '@trezor/icons';
 
 import { useSelector } from 'src/hooks/suite';
 
@@ -34,6 +35,7 @@ export const VotingDelegationsOptions = ({
     hasTitle = false,
     hasKeepCurrentOption = false,
 }: VotingDelegationsOptionsProps) => {
+    const [convertedDrepId, setConvertedDrepId] = useState<string | null>(null);
     const dispatch = useDispatch();
     const { translationString } = useTranslation();
     const selectedVotingDelegation = useSelector(state =>
@@ -48,6 +50,10 @@ export const VotingDelegationsOptions = ({
         selectedVotingDelegation.type === 'another_drep' &&
         selectedVotingDelegation.drepId !== '' &&
         !validateCardanoDrep(selectedVotingDelegation.drepId);
+
+    const hasConvertedDrepId =
+        selectedVotingDelegation.type === 'another_drep' &&
+        convertedDrepId === selectedVotingDelegation.drepId;
 
     const handleOptionSelect = (type: VotingDelegationOption['type']) => {
         switch (type) {
@@ -81,12 +87,28 @@ export const VotingDelegationsOptions = ({
     };
 
     const handleDrepIdChange = (value: string) => {
+        const cip129DrepId = convertDrepIdToCip129(value);
+
+        setConvertedDrepId(cip129DrepId);
+
         dispatch(
             stakeActions.setAccountVotingDelegation({
                 accountKey: account.key,
-                option: { type: 'another_drep', drepId: value },
+                option: { type: 'another_drep', drepId: cip129DrepId ?? value },
             }),
         );
+    };
+
+    const getDrepIdBottomText = () => {
+        if (hasError) {
+            return <Translation id="TR_STAKING_INVALID_DREP_ID" />;
+        }
+
+        if (hasConvertedDrepId) {
+            return <Translation id="TR_STAKING_DREP_ID_CONVERTED" />;
+        }
+
+        return null;
     };
 
     const optionKeys = hasKeepCurrentOption ? VOTING_OPTION_KEYS_WITH_CURRENT : VOTING_OPTION_KEYS;
@@ -114,10 +136,11 @@ export const VotingDelegationsOptions = ({
                                     value={selectedVotingDelegation.drepId}
                                     inputMode="text"
                                     hasError={hasError}
-                                    bottomText={
-                                        hasError ? (
-                                            <Translation id="TR_STAKING_INVALID_DREP_ID" />
-                                        ) : null
+                                    bottomText={getDrepIdBottomText()}
+                                    bottomTextIconComponent={
+                                        hasConvertedDrepId ? (
+                                            <Icon as={CheckIcon} size={16} isDisabled={true} />
+                                        ) : undefined
                                     }
                                     onChange={e => handleDrepIdChange(e.target.value)}
                                 />

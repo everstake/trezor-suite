@@ -232,3 +232,152 @@ export const hasCardanoLiveVoteDelegation = [
         result: false,
     },
 ];
+
+const SCRIPT_HASH_DREP_CIP105 = 'drep_script1g2d3y3skgr806wj2ryhhc5ca3akx6vmppde87jq7kgknj5wf0ec';
+const SCRIPT_HASH_DREP_CIP129 = 'drep1ydpfkyjxzeqvalf6fgvj7lznrk8kcmfnvy9hyl6gr6ez6wgsjaelx';
+
+const KEY_HASH_DREP_CIP105 = 'drep1ectemlv45xsnvenfgkhwsxncfvxev4qllj7x5w6vlfc7kmd9zcs';
+
+const UNKNOWN_HEADER_DREP = bech32.encode(
+    'drep',
+    bech32.toWords(Uint8Array.from([0x21, ...new Uint8Array(28).fill(9)])),
+);
+
+export const convertDrepIdToCip129 = [
+    {
+        description: 'legacy script hash id gets the 0x23 header and the plain drep prefix',
+        drepId: SCRIPT_HASH_DREP_CIP105,
+        result: SCRIPT_HASH_DREP_CIP129,
+    },
+    {
+        description: 'legacy key hash id gets the 0x22 header',
+        drepId: KEY_HASH_DREP_CIP105,
+        result: CARDANO_EVERSTAKE_DREP.bech32,
+    },
+    {
+        description: 'uppercase legacy id converts to the canonical lowercase form',
+        drepId: SCRIPT_HASH_DREP_CIP105.toUpperCase(),
+        result: SCRIPT_HASH_DREP_CIP129,
+    },
+    {
+        description: 'id already in CIP-129 has nothing to convert',
+        drepId: CARDANO_EVERSTAKE_DREP.bech32,
+        result: null,
+    },
+    {
+        description: 'uppercase CIP-129 id is canonicalized to lowercase',
+        drepId: CARDANO_EVERSTAKE_DREP.bech32.toUpperCase(),
+        result: CARDANO_EVERSTAKE_DREP.bech32,
+    },
+    {
+        description: 'raw hex is not a bech32 id',
+        drepId: CARDANO_EVERSTAKE_DREP.hex,
+        result: null,
+    },
+    {
+        description: 'empty string',
+        drepId: '',
+        result: null,
+    },
+    {
+        description: 'not a DRep id at all',
+        drepId: 'not-a-drep',
+        result: null,
+    },
+    {
+        description: 'pool id is bech32 but not a DRep',
+        drepId: CARDANO_EVERSTAKE_STAKING_POOL.bech32,
+        result: null,
+    },
+    {
+        description: 'id whose checksum does not hold',
+        drepId: `${SCRIPT_HASH_DREP_CIP105.slice(0, -1)}q`,
+        result: null,
+    },
+];
+
+export const validateCardanoDrep = [
+    {
+        description: 'legacy key hash id',
+        drepId: KEY_HASH_DREP_CIP105,
+        result: true,
+    },
+    {
+        description: 'legacy script hash id',
+        drepId: SCRIPT_HASH_DREP_CIP105,
+        result: true,
+    },
+    {
+        description: 'CIP-129 id',
+        drepId: CARDANO_EVERSTAKE_DREP.bech32,
+        result: true,
+    },
+    {
+        description: 'CIP-129 id carrying a header byte that has no DRep type',
+        drepId: UNKNOWN_HEADER_DREP,
+        result: false,
+    },
+    {
+        description: 'drep_script prefix with a 29-byte CIP-129 payload',
+        drepId: bech32.encode(
+            'drep_script',
+            bech32.toWords(Uint8Array.from([0x23, ...new Uint8Array(28).fill(9)])),
+        ),
+        result: false,
+    },
+    {
+        description: 'empty string',
+        drepId: '',
+        result: false,
+    },
+    {
+        description: 'raw hex',
+        drepId: CARDANO_EVERSTAKE_DREP.hex,
+        result: false,
+    },
+];
+
+export const convertDrepIdToCip129PreservesCertificate = [
+    { description: 'script hash', drepId: SCRIPT_HASH_DREP_CIP105 },
+    { description: 'key hash', drepId: KEY_HASH_DREP_CIP105 },
+];
+
+export const getCardanoAccountDrepId = [
+    {
+        description: 'legacy key hash id is reported in CIP-129',
+        account: cardanoAccountWithDrep({ drep_id: KEY_HASH_DREP_CIP105 }),
+        result: CARDANO_EVERSTAKE_DREP.bech32,
+    },
+    {
+        description: 'legacy script hash id is reported in CIP-129',
+        account: cardanoAccountWithDrep({ drep_id: SCRIPT_HASH_DREP_CIP105 }),
+        result: SCRIPT_HASH_DREP_CIP129,
+    },
+    {
+        description: 'id already in CIP-129 is reported unchanged',
+        account: cardanoAccountWithDrep({ drep_id: CARDANO_EVERSTAKE_DREP.bech32 }),
+        result: CARDANO_EVERSTAKE_DREP.bech32,
+    },
+    {
+        description: 'uppercase id is reported in the canonical lowercase form',
+        account: cardanoAccountWithDrep({
+            drep_id: CARDANO_EVERSTAKE_DREP.bech32.toUpperCase(),
+        }),
+        result: CARDANO_EVERSTAKE_DREP.bech32,
+    },
+    {
+        description: 'id Suite cannot parse is passed through rather than hidden',
+        account: cardanoAccountWithDrep({ drep_id: 'drep_of_a_format_suite_does_not_know' }),
+        result: 'drep_of_a_format_suite_does_not_know',
+    },
+    {
+        description: 'account with no vote delegation',
+        account: cardanoAccountWithDrep(null),
+        result: null,
+    },
+    {
+        description: 'non-cardano account',
+        account: { networkType: 'ethereum' },
+        result: null,
+    },
+];
